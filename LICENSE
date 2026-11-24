@@ -1,0 +1,22 @@
+Turn Right 好轉燈 — Good Sign 好兆系列
+Copyright (c) 2026 robothandyman. All rights reserved.
+
+本專案之原始碼、介面設計、文字、圖示與說明文件，著作權皆屬著作人所有。
+歡迎任何人透過 https://robothandyman.github.io/goodturn/ 免費使用本網頁工具。
+未經著作人書面同意，不得重製、修改、散布本專案程式碼，或將其用於商業用途。
+
+The source code, UI design, text, icons and documentation of this project are
+the copyrighted work of the author. Anyone may use the hosted web app at
+https://robothandyman.github.io/goodturn/ free of charge. No permission is
+granted to copy, modify, redistribute or commercially use the source code
+without the author's prior written consent.
+
+------------------------------------------------------------------------------
+Third-party components（第三方元件，依其原授權條款使用）
+
+- QR Code Generator for JavaScript (qrcode.js)
+  Copyright (c) 2009 Kazuhiko Arase — MIT License
+- MQTT.js (mqtt.min.js)
+  Copyright (c) MQTT.js contributors — MIT License
+- TensorFlow.js and COCO-SSD (loaded from CDN at runtime, not redistributed here)
+  Copyright Google LLC — Apache License 2.0
