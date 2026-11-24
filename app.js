@@ -301,6 +301,10 @@ function startTail(code) {
   store.set('tailCode', code);
   store.set('last', { role: 'tail', code });
   $('#tBig').textContent = code;
+  try {   // QR：龍頭手機用相機掃描即開啟並配對
+    const q = qrcode(0, 'M'); q.addData(location.origin + location.pathname + '?code=' + code); q.make();
+    $('#tQr').innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+  } catch (e) { $('#tQr').parentNode.hidden = true; }
   $('#tCode').innerHTML = '';
   $('#tCode').append('號碼 '); const b = document.createElement('b'); b.textContent = code; $('#tCode').append(b);
   show('tail');
