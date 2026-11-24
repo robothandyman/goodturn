@@ -82,8 +82,12 @@ button{font-family:var(--f);color:inherit}
 #tCode{font-size:.85rem;color:var(--mute);margin-right:auto}
 #tCode b{color:var(--amber);font-size:1.1rem;letter-spacing:.15em}
 #tPair{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:#000;text-align:center;padding:20px}
-#tPair .code{font-size:clamp(4rem,22vw,9rem);font-weight:900;letter-spacing:.12em;color:var(--amber);line-height:1}
+#tPair .code{font-size:clamp(3.5rem,16vw,9rem);font-weight:900;letter-spacing:.12em;color:var(--amber);line-height:1}
 #tPair p{margin:0;color:var(--mute);font-size:1.05rem}
+#tPair .prow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:5vw}
+#tPair .pq{display:flex;flex-direction:column;align-items:center;gap:8px}
+#tQr{background:#fff;padding:10px;border-radius:12px;width:min(42vh,56vw)}
+#tQr svg{display:block;width:100%;height:auto}
 #cam{position:absolute;top:calc(env(safe-area-inset-top,0px) + 8px);left:8px;width:min(46vw,320px,calc((100vh - 100px) * 4 / 3));border:2px solid var(--green);border-radius:8px;overflow:hidden;background:#111}
 #cam video,#cam canvas{display:block;width:100%;height:auto}
 #cam canvas{position:absolute;inset:0;height:100%}
@@ -153,13 +157,14 @@ button{font-family:var(--f);color:inherit}
     <button id="camBtn" type="button" hidden>看鏡頭</button>
     <button id="tExit" type="button">離開</button>
   </div>
-  <div id="tPair"><p>在龍頭手機輸入這組號碼</p><div class="code" id="tBig"></div><p id="tWait">等待龍頭手機連線…</p></div>
+  <div id="tPair"><div class="prow"><div><p>在龍頭手機輸入這組號碼</p><div class="code" id="tBig"></div></div><div class="pq"><div id="tQr"></div><p>或用龍頭手機相機掃描</p></div></div><p id="tWait">等待龍頭手機連線…</p></div>
 </section>
 
 <div class="gate" id="gate" hidden><button id="gateBtn" type="button">開始</button><p id="gateTxt"></p></div>
 <div id="toast" hidden></div>
 
 <script src="mqtt.min.js"></script>
-<script src="app.js?v=5"></script>
+<script src="qrcode.js"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
