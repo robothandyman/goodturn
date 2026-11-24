@@ -37,5 +37,13 @@ HTML／CSS／JavaScript、MQTT over WebSocket、TensorFlow.js + COCO-SSD、Web S
 - AI 影像辨識全部在手機上執行，影像不會上傳。
 - 每組號碼各自獨立連線，可多人同時使用。
 
+## 版權與授權
+
+Copyright © 2026 robothandyman（Good Sign 好兆系列）。保留所有權利，詳見 [LICENSE](LICENSE)。
+
+- 歡迎任何人直接使用上方網址的網頁工具，免費。
+- 如需重製、修改或轉載程式碼，請先取得作者同意。
+- 本專案使用的第三方元件（QR Code Generator、MQTT.js、TensorFlow.js、COCO-SSD）依其原授權條款（MIT／Apache-2.0）使用。
+
 ---
 Good Sign 好兆系列：https://is.gd/goodsign
