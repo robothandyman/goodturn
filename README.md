@@ -1,10 +1,12 @@
-# 好轉燈：舊手機變身 AI 腳踏車方向燈
+# Turn Right 好轉燈：舊手機變身 AI 腳踏車方向燈
 
-**GoodTurn — AI bicycle turn signal made from old phones**
+**Good Sign 好兆系列｜Turn Right — AI bicycle turn signal made from old phones**
+
+> 轉彎先打燈，就是做一件好事。
 
 兩支手機就能組成腳踏車方向燈：龍頭手機遙控，車尾手機顯示流水箭頭，並用 AI 偵測後方來車。
 
-- 立即使用：**https://is.gd/goodturn**
+- 立即使用：**https://is.gd/turnright**
 - 完整網址：https://robothandyman.github.io/goodturn/
 
 ## 怎麼用
@@ -34,3 +36,6 @@ HTML／CSS／JavaScript、MQTT over WebSocket、TensorFlow.js + COCO-SSD、Web S
 - 純靜態網頁，不需安裝 App，也沒有後端伺服器。
 - AI 影像辨識全部在手機上執行，影像不會上傳。
 - 每組號碼各自獨立連線，可多人同時使用。
+
+---
+Good Sign 好兆系列：https://is.gd/goodsign
