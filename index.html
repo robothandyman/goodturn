@@ -66,15 +66,19 @@ button{font-family:var(--f);color:inherit}
 @keyframes pulse{50%{border-color:transparent}}
 
 /* ── 車尾燈 ── */
-#tail{background:#000}
+/* 車尾底色：黑（夜間）／白（日間）／琥珀（打燈時滿版琥珀＋黑箭頭，日光下最醒目） */
+#tail{--tbg:#000;--aoff:var(--amber-dim);--aon:var(--amber);--glow:drop-shadow(0 0 10px var(--amber));background:var(--tbg)}
+#tail.bg-white{--tbg:#fff;--aoff:#e4e4e4;--aon:#ff7a00;--glow:none}
+#tail.bg-white #tCode{color:#333}
+#tail.bg-amber.sig{--tbg:var(--amber);--aoff:#b37800;--aon:#000;--glow:none}
 #tail .lamp{flex:1;display:flex;align-items:center;justify-content:center;gap:2vw;padding:3vh 2vw;position:relative}
 #tail svg.arrow{flex:1;height:auto;max-height:72vh}
-#tail svg.arrow path{fill:none;stroke:var(--amber-dim);stroke-width:30;stroke-linecap:round;stroke-linejoin:round}
-#tail svg.arrow path.lit{stroke:var(--amber);filter:drop-shadow(0 0 10px var(--amber))}
+#tail svg.arrow path{fill:none;stroke:var(--aoff);stroke-width:30;stroke-linecap:round;stroke-linejoin:round}
+#tail svg.arrow path.lit{stroke:var(--aon);filter:var(--glow)}
 #arrowR{transform:scaleX(-1)}
 #pos{position:absolute;inset:8vh 8vw;border-radius:40px;background:radial-gradient(ellipse at center,rgba(255,42,26,.55),rgba(255,42,26,.08) 70%,transparent);}
 #tail.warn .lamp{animation:warn .3s steps(2) infinite}
-@keyframes warn{0%{background:#000}50%{background:var(--red-dim)}}
+@keyframes warn{0%{background:var(--tbg)}50%{background:var(--red-dim)}}
 #tail .tbar{position:absolute;left:0;right:0;bottom:0;display:flex;gap:6px;padding:6px calc(env(safe-area-inset-right,0px) + 6px) calc(env(safe-area-inset-bottom,0px) + 6px) calc(env(safe-area-inset-left,0px) + 6px);opacity:.55;align-items:center;flex-wrap:wrap}
 #tail .tbar:hover,#tail .tbar:focus-within{opacity:1}
 #tail .tbar button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:7px 10px;font-size:.85rem;cursor:pointer}
@@ -153,6 +157,7 @@ button{font-family:var(--f);color:inherit}
   <div class="tbar">
     <span id="tCode"></span>
     <button id="sBtn" type="button" class="act">聲音</button>
+    <button id="bgBtn" type="button">底色：黑</button>
     <button id="aiBtn" type="button">AI 來車偵測</button>
     <button id="camBtn" type="button" hidden>看鏡頭</button>
     <button id="tExit" type="button">離開</button>
