@@ -379,6 +379,7 @@ setInterval(() => {
   if (s !== 'off') turnSound(s, T.phase);
   T.phase = (T.phase + 1) % 6;
   $('#tail').classList.toggle('warn', T.carLvl > 0);
+  $('#tail').classList.toggle('sig', s !== 'off');
   if (!T.paired) $('#tWait').textContent = T.net === 'online' ? '已連上網路，等待龍頭手機輸入號碼…' : '連線網路中…';
 }, 110);
 setInterval(() => { if (!$('#tail').hidden) pubTailHb(); }, 3000);
@@ -394,6 +395,17 @@ function setSnd(m) {
 }
 $('#sBtn').onclick = () => setSnd(SND[(SND.indexOf(T.snd) + 1) % SND.length]);
 sndLabel();
+
+// 車尾底色：黑（夜間）／白（日間）／琥珀（打燈時滿版），記在手機裡
+const BG = ['black', 'white', 'amber'], BG_NAME = { black: '黑', white: '白', amber: '琥珀' };
+T.bg = BG.includes(store.get('bg', 'black')) ? store.get('bg', 'black') : 'black';
+function setBg(m) {
+  T.bg = m; store.set('bg', m);
+  for (const b of BG) $('#tail').classList.toggle('bg-' + b, b === m);
+  $('#bgBtn').textContent = '底色：' + BG_NAME[m];
+}
+$('#bgBtn').onclick = () => { setBg(BG[(BG.indexOf(T.bg) + 1) % BG.length]); toast('底色：' + BG_NAME[T.bg]); };
+setBg(T.bg);
 $('#tExit').onclick = () => { location.href = location.pathname; };
 // 跳出權限視窗等情況會退出全螢幕，點一下燈區就回到全螢幕
 $('#tail .lamp').addEventListener('click', () => { if (!document.fullscreenElement) fullscreen(); });
