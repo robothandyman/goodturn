@@ -43,37 +43,47 @@ function gate(text, fn) {
   $('#gateBtn').onclick = async () => { $('#gate').hidden = true; await fn(); };
 }
 
-// ── MQTT 連線（連不上就換下一台 broker） ──────────────────────────
+// ── MQTT 連線：同時連所有 broker，兩邊都送、都收 ─────────────────────
+// 舊做法是「連不上就換下一台」，兩支手機可能各自落在不同 broker 而互相收不到。
 function makeLink(code, onMsg, onStatus) {
-  let client = null, i = 0;
   const base = NS + code + '/';
-  function connect() {
-    const url = BROKERS[i++ % BROKERS.length];
-    onStatus('connecting');
-    const c = mqtt.connect(url, {
+  const clients = BROKERS.map(() => null);
+  const seen = new Map();   // 同一則訊息會從兩台 broker 各收到一次，2 秒內重複的略過
+  const anyOnline = () => clients.some(c => c && c.connected);
+  const report = () => onStatus(anyOnline() ? 'online' : 'connecting');
+  function connect(k) {
+    const c = mqtt.connect(BROKERS[k], {
       clientId: 'gt-' + Math.random().toString(16).slice(2, 10),
       reconnectPeriod: 0, connectTimeout: 6000, clean: true, keepalive: 20,
     });
-    client = c;
+    clients[k] = c;
     let closed = false;
-    c.on('connect', () => { onStatus('online'); c.subscribe(base + '#'); });
+    c.on('connect', () => { c.subscribe(base + '#'); report(); });
     c.on('message', (t, b) => {
-      let d; try { d = JSON.parse(b.toString()); } catch (e) { return; }
+      const raw = b.toString(), key = t + '|' + raw, now = Date.now();
+      if (now - (seen.get(key) || 0) < 2000) return;
+      seen.set(key, now);
+      if (seen.size > 200) for (const [kk, v] of seen) if (now - v > 2000) seen.delete(kk);
+      let d; try { d = JSON.parse(raw); } catch (e) { return; }
       onMsg(t.slice(base.length), d);
     });
     c.on('close', () => {
       if (closed) return; closed = true;
-      if (client === c) client = null;
-      onStatus('offline');
+      if (clients[k] === c) clients[k] = null;
       try { c.end(true); } catch (e) {}
-      setTimeout(connect, 2000);
+      report();
+      setTimeout(() => connect(k), 2000);
     });
     c.on('error', () => {});
   }
-  connect();
+  onStatus('connecting');
+  BROKERS.forEach((_, k) => connect(k));
   return {
-    pub(sub, obj, retain) { if (client && client.connected) client.publish(base + sub, JSON.stringify(obj), { qos: 0, retain: !!retain }); },
-    get online() { return !!(client && client.connected); },
+    pub(sub, obj, retain) {
+      const msg = JSON.stringify(obj);
+      for (const c of clients) if (c && c.connected) c.publish(base + sub, msg, { qos: 0, retain: !!retain });
+    },
+    get online() { return anyOnline(); },
   };
 }
 
@@ -398,7 +408,7 @@ sndLabel();
 
 // 車尾底色：黑（夜間）／白（日間）／琥珀（打燈時滿版），記在手機裡
 const BG = ['black', 'white', 'amber'], BG_NAME = { black: '黑', white: '白', amber: '琥珀' };
-T.bg = BG.includes(store.get('bg', 'black')) ? store.get('bg', 'black') : 'black';
+T.bg = BG.includes(store.get('bg', 'amber')) ? store.get('bg', 'amber') : 'amber';
 function setBg(m) {
   T.bg = m; store.set('bg', m);
   for (const b of BG) $('#tail').classList.toggle('bg-' + b, b === m);
